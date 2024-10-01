@@ -7,12 +7,14 @@ const path = require("path"); // Importing 'path' module to handle file and dire
 const methodOverride = require("method-override"); // Importing method-override for overriding HTTP methods
 const Listing = require("./models/listing.model.js");
 const { render } = require("ejs");
+const ejsMate = require("ejs-mate");
 
 app.set("view engine", "ejs"); // Setting the view engine to EJS for templating
 app.set("views", path.join(__dirname, "/views")); // Setting the views directory
-app.use(express.static(path.join(__dirname, "public"))); // Serving static files from the 'public' directory
+app.use(express.static(path.join(__dirname, "/public"))); // Serving static files from the 'public' directory
 app.use(express.urlencoded({ extended: true })); // Parsing URL-encoded data (e.g., form submissions)
 app.use(methodOverride("_method")); // Enabling method override to support PUT and DELETE methods
+app.engine("ejs", ejsMate);
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
