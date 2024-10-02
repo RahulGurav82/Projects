@@ -79,3 +79,8 @@ body {
     opacity: 0.2;
     background: wheat;
 }
+
+/* show  */
+.show-img {
+    height: 30vh;
+}
