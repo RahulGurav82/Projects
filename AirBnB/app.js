@@ -8,7 +8,7 @@ const methodOverride = require("method-override"); // Importing method-override 
 const Listing = require("./models/listing.model.js");
 const { render } = require("ejs");
 const ejsMate = require("ejs-mate");
-
+ 
 app.set("view engine", "ejs"); // Setting the view engine to EJS for templating
 app.set("views", path.join(__dirname, "/views")); // Setting the views directory
 app.use(express.static(path.join(__dirname, "/public"))); // Serving static files from the 'public' directory
@@ -20,11 +20,11 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
 main()
 .then(()=>{
-    console.log("Connect To DB");
+    console.log("DataBase Connection SuccessFull.!!");
 })
 .catch((err)=> {
-    console.log("Error During Connect To DB", err);
-})
+    console.log("Error During Connect To DataBase..!!", err);
+});
 
 
 async function main() {
