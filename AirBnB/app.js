@@ -7,7 +7,9 @@ const ejsMate = require("ejs-mate"); // Importing ejsMate for EJS layouts
 const Listing = require("./models/listing.model.js"); // Importing the Listing model
 const wrapAsync = require("./utils/wrapAsync.js"); // Utility to handle async errors
 const ExpressError = require("./utils/ExpressError.js"); // Custom error class
-const { ListingSchema } = require("./schema.js"); // Importing Joi schema for validation
+const { ListingSchema, reviewsSchema } = require("./schema.js"); // Importing Joi schema for validation
+const Review = require("./models/review.model.js"); // Importing the Listing model
+
 
 // Express App Setup
 const app = express(); // Creating an instance of Express
@@ -36,6 +38,15 @@ const validateSchema = (req, res, next) => {
     }
 };
 
+const validateReviews = (req, res, next) => {
+    const { error } = ListingSchema.validate(req.body);
+    if (error) {
+        throw new ExpressError(400, error.details.map(err => err.message).join(', '));
+    } else {
+        next();
+    }
+};
+
 // Routes
 app.get("/", (req, res) => {
     res.send("App is working.");
@@ -52,7 +63,7 @@ app.get("/listings/new", (req, res) => {
 
 app.get("/listings/:id", wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const listings = await Listing.findById(id);
+    const listings = await Listing.findById(id).populate("reviews");
     res.render("listings/show", { listings });
 }));
 
@@ -81,6 +92,32 @@ app.delete("/listings/:id/delete", wrapAsync(async (req, res) => {
     res.redirect("/listings");
 }));
 
+// route for listing Route
+app.post("/listings/:id/reviews", validateReviews,  wrapAsync,async (req, res) => {
+    const { id } = req.params;
+    const listing = await Listing.findById(id);
+    const newReview = new Review(req.body.review);
+ 
+    listing.reviews.push(newReview);
+ 
+    await newReview.save().then(()=> console.log("Saved")).catch((err) => console.log("error while new review saved"));
+    await listing.save().then(()=> console.log("Saved")).catch((err) => console.log("error while new listing saved"));
+ 
+    // console.log("New review saved");
+    res.redirect(`/listings/${id}`);
+ });
+ 
+
+ app.delete("/listing/:id/reviews/reviewID"), wrapAsync, (async (req, res)=> {
+    let { id, reviewId} = req.params;
+
+    await Listing.findByIdAndDelete(id, {$pull : {reviews : reviewId}})
+    await reviews.findById(reviewId);
+
+
+    res.redirect("/listings/$(id)");
+ })
+ 
 // Error Handling
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));

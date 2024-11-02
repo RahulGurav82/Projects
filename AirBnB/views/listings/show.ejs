@@ -24,5 +24,39 @@
         </button>
     </form>
 
+    <div class="col-8 offset-3 mb-3">
+        <h4>Leave A Review</h4>
+        <!-- Add method="POST" and the Bootstrap class "needs-validation" for validation -->
+        <form action="/listings/<%= listings._id %>/reviews" method="POST" novalidate class="mb-3 mt-3 needs-validation">
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating</label>
+                <input type="range" name="review[rating]" min="1" max="5" step="1" id="rating" class="form-range" required>
+                <div class="invalid-feedback">
+                    Please provide a rating.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="comment" class="form-label">Comments</label>
+                <textarea name="review[comment]" id="comment" cols="60" rows="10" class="form-control" required></textarea>
+                <div class="invalid-feedback">
+                    Please enter a comment.
+                </div>
+            </div>
+            <button class="btn btn-outline-dark" type="submit">Submit</button>
+        </form>
+    <hr />
+
+    <h4>All Ratings</h4>
+    <ul>
+    <% for(review of listings.reviews) {%>
+        <li> <%= review.comment %>, <%= review.rating %></li>
+        <form action="post" method="/listings/._id/reviews/._id/?_metgod="DELETE" >
+            <button class="btn btn-sm dark-dark">Delete</button>
+        </form>
+        
+    <% } %>
+    </ul>
+    </div>
+    
 </div>
 </div>
