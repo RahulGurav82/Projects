@@ -39,7 +39,7 @@ const validateSchema = (req, res, next) => {
 };
 
 const validateReviews = (req, res, next) => {
-    const { error } = ListingSchema.validate(req.body);
+    const { error } = reviewsSchema.validate(req.body);
     if (error) {
         throw new ExpressError(400, error.details.map(err => err.message).join(', '));
     } else {
@@ -93,7 +93,7 @@ app.delete("/listings/:id/delete", wrapAsync(async (req, res) => {
 }));
 
 // route for listing Route
-app.post("/listings/:id/reviews", validateReviews,  wrapAsync,async (req, res) => {
+app.post("/listings/:id/reviews", validateReviews,  wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
     const newReview = new Review(req.body.review);
@@ -105,18 +105,22 @@ app.post("/listings/:id/reviews", validateReviews,  wrapAsync,async (req, res) =
  
     // console.log("New review saved");
     res.redirect(`/listings/${id}`);
- });
+ }));
  
 
- app.delete("/listing/:id/reviews/reviewID"), wrapAsync, (async (req, res)=> {
-    let { id, reviewId} = req.params;
+ app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
 
-    await Listing.findByIdAndDelete(id, {$pull : {reviews : reviewId}})
-    await reviews.findById(reviewId);
+    // Pull the review from the listing
+    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
 
+    // Delete the review itself
+    await Review.findByIdAndDelete(reviewId);
 
-    res.redirect("/listings/$(id)");
- })
+    // Redirect back to the listing
+    res.redirect(`/listings/${id}`);
+}));
+
  
 // Error Handling
 app.all("*", (req, res, next) => {
