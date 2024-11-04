@@ -24,7 +24,7 @@ Router.post("/", validateReviews,  wrapAsync(async (req, res) => {
     await newReview.save().then(()=> console.log("Saved")).catch((err) => console.log("error while new review saved"));
     await listing.save().then(()=> console.log("Saved")).catch((err) => console.log("error while new listing saved"));
  
-    // console.log("New review saved");
+    req.flash("Success", "New Review Added")
     res.redirect(`/listings/${id}`);
  }));
  
@@ -37,7 +37,7 @@ Router.post("/", validateReviews,  wrapAsync(async (req, res) => {
 
     // Delete the review itself
     await Review.findByIdAndDelete(reviewId);
-
+    req.flash("Success", "Review deleted.");
     // Redirect back to the listing
     res.redirect(`/listings/${id}`);
 }));

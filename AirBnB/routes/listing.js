@@ -27,6 +27,10 @@ Router.get("/new", (req, res) => {
 Router.get("/:id", wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listings = await Listing.findById(id).populate("reviews");
+    if(!listings){
+        req.flash("error", "Listings You Requested. Not Exist..!")
+        res.redirect("/listings")
+    }
     res.render("listings/show", { listings });
 }));
 
@@ -34,24 +38,31 @@ Router.post("/new", validateSchema, wrapAsync(async (req, res) => {
     const { listing } = req.body;
     const newListing = new Listing(listing);
     await newListing.save();
+    req.flash("Success", "New Listing Created.");
     res.redirect("/listings");
 }));
 
 Router.get("/:id/edit", wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listings = await Listing.findById(id);
+    if(!listings){
+        req.flash("error", "Listings You Requested. Not Exist..!")
+        res.redirect("/listings")
+    }
     res.render("listings/edit", { listings });
 }));
 
 Router.put("/:id/edit", validateSchema, wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    req.flash("Success", "Listing Updated.")
     res.redirect("/listings");
 }));
 
 Router.delete("/:id/delete", wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);
+    req.flash("Success", " Listing Deleted.")
     res.redirect("/listings");
 }));
 

@@ -6,7 +6,9 @@ const methodOverride = require("method-override"); // Importing method-override 
 const ejsMate = require("ejs-mate"); // Importing ejsMate for EJS layouts
 const ExpressError = require("./utils/ExpressError.js"); // Custom error class
 const listing = require("./routes/listing.js");
-const reviews = require("./routes/review.js")
+const reviews = require("./routes/review.js");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 // Express App Setup
 const app = express(); // Creating an instance of Express
@@ -20,26 +22,48 @@ app.use(express.static(path.join(__dirname, "/public"))); // Serving static file
 app.use(express.urlencoded({ extended: true })); // Parsing URL-encoded data (e.g., form submissions)
 app.use(methodOverride("_method")); // Enabling method override to support PUT and DELETE methods
 
-// Database Connection
-mongoose.connect(MONGO_URL)
-    .then(() => console.log("Database Connection Successful!"))
-    .catch((err) => console.log("Database Connection Error:", err));
-
+// Session Configuration
+const sessionOptions = {
+    secret: "mysupersecretstrings",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Cookie expiration set to 1 week from now
+        maxAge: 7 * 24 * 60 * 60 * 1000, // Max age: 1 week in milliseconds
+        httpOnly: true, // Ensuring the cookie is accessible only by the web server
+    }
+}
 
 // Routes
 app.get("/", (req, res) => {
     res.send("App is working.");
 });
 
+app.use(session(sessionOptions)); // Enabling sessions with sessionOptions
+app.use(flash()); // Enabling flash messages
+
+// Database Connection
+mongoose.connect(MONGO_URL)
+    .then(() => console.log("Database Connection Successful!"))
+    .catch((err) => console.log("Database Connection Error:", err));
+
+// Flash message middleware to set success/error messages
+app.use((req, res, next) => {
+    res.locals.Success = req.flash("Success");
+    res.locals.error = req.flash("error");
+    next();
+});
+
+// Use defined routes for listings and reviews
 app.use("/listings", listing);
 app.use("/listings/:id/reviews", reviews);
 
-
-// Error Handling
+// Error Handling for unknown routes
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
 });
 
+// General error handling middleware
 app.use((err, req, res, next) => {
     const { statusCode = 500, message = "Something went wrong" } = err;
     res.status(statusCode).render("error", { message });
