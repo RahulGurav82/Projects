@@ -5,10 +5,14 @@ const path = require("path"); // Importing 'path' module to handle file and dire
 const methodOverride = require("method-override"); // Importing method-override for overriding HTTP methods
 const ejsMate = require("ejs-mate"); // Importing ejsMate for EJS layouts
 const ExpressError = require("./utils/ExpressError.js"); // Custom error class
-const listing = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
+const listingRouter = require("./routes/listing.js");
+const reviewsRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.model.js");
 
 // Express App Setup
 const app = express(); // Creating an instance of Express
@@ -41,6 +45,12 @@ app.get("/", (req, res) => {
 
 app.use(session(sessionOptions)); // Enabling sessions with sessionOptions
 app.use(flash()); // Enabling flash messages
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 // Database Connection
 mongoose.connect(MONGO_URL)
@@ -54,9 +64,20 @@ app.use((req, res, next) => {
     next();
 });
 
+app.get("/demouser", async (req, res) => {
+    let fakeUser = new User({
+        email : "student@gmail.com",
+        username : "rahul"
+    });
+
+    let registerUser = await User.register(fakeUser, "rahul");
+    res.send(registerUser);
+});
+
 // Use defined routes for listings and reviews
-app.use("/listings", listing);
-app.use("/listings/:id/reviews", reviews);
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewsRouter);
+app.use("/", userRouter);
 
 // Error Handling for unknown routes
 app.all("*", (req, res, next) => {
