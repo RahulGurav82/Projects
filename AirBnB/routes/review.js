@@ -5,6 +5,7 @@ const {reviewsSchema } = require("../schema.js"); // Importing Joi schema for va
 const ExpressError = require("../utils/ExpressError.js"); // Custom error class
 const Listing = require("../models/listing.model.js"); // Importing the Listing model
 const Review = require("../models/review.model.js"); // Importing the Listing model
+const { isLoggedIn, isReviewAuthor } = require("../middleware.js");
 
 const validateReviews = (req, res, next) => {
     const { error } = reviewsSchema.validate(req.body);
@@ -14,11 +15,12 @@ const validateReviews = (req, res, next) => {
         next();
     }
 };
-Router.post("/", validateReviews,  wrapAsync(async (req, res) => {
+
+Router.post("/", isLoggedIn, validateReviews,  wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
     const newReview = new Review(req.body.review);
- 
+    newReview.author = req.user._id;
     listing.reviews.push(newReview);
  
     await newReview.save().then(()=> console.log("Saved")).catch((err) => console.log("error while new review saved"));
@@ -29,7 +31,7 @@ Router.post("/", validateReviews,  wrapAsync(async (req, res) => {
  }));
  
 
- Router.delete("/:reviewId", wrapAsync(async (req, res) => {
+ Router.delete("/:reviewId", isLoggedIn, isReviewAuthor, wrapAsync(async (req, res) => {
     const { id, reviewId } = req.params;
 
     // Pull the review from the listing

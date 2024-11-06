@@ -8,21 +8,23 @@
             <img src="<%= listings.image.url %>" alt="<%= listings.title %>" class="card-img-top show-img">
             <div class="card-body">
                 <h3 class="card-title"><%= listings.title %></h3>
+                <p class="card-text">Owned By :<%= listings.owner.username %></p>
                 <p class="card-text"><%= listings.description %></p>
                 <p class="card-text"><strong>Price:</strong> &#8377;<%= listings.price.toLocaleString("en-IN") %></p>
                 <p class="card-text"><strong>Location:</strong> <%= listings.location %>, <%= listings.country %></p>
             </div>
-            <div class="card-footer">
-                <a href="/listings/<%= listings._id %>/edit" class="btn btn-primary">Edit</a>
-                <form method="POST" action="/listings/<%= listings._id %>/delete?_method=DELETE" class="d-inline">
-                    <button class="btn btn-danger">Delete</button>
-                </form>
+                <div class="card-footer">
+                    <a href="/listings/<%= listings._id %>/edit" class="btn btn-primary">Edit</a>
+                    <form method="POST" action="/listings/<%= listings._id %>/delete?_method=DELETE" class="d-inline">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+  
             </div>
-        </div>
-
-        <!-- Review Section -->
-        <div class="mb-4">
-            <h4>Leave A Review</h4>
+            <% if(currUser) { %>
+            <!-- Review Section -->
+            <div class="mb-4">
+                <h4>Leave A Review</h4>
             <form action="/listings/<%= listings._id %>/reviews" method="POST" class="mb-3 mt-3 needs-validation" novalidate>
                 <div class="mb-3">
                     <label for="rating" class="form-label">Rating</label>
@@ -41,6 +43,7 @@
                 <button class="btn btn-outline-dark" type="submit">Submit</button>
             </form>
         </div>
+        <% } %>
 
         <!-- Display All Reviews -->
         <hr />
@@ -48,7 +51,7 @@
         <ul class="list-group mb-4">
             <% listings.reviews.forEach(function(review) { %>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span><strong>Rating:</strong> <%= review.rating %>/5, <%= review.comment %></span>
+                    <span><%= review.author.username %><strong>Rating:</strong> <%= review.rating %>/5, <%= review.comment %></span>
                     <form action="/listings/<%= listings._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
                         <button class="btn btn-sm btn-danger">Delete</button>
                     </form>
