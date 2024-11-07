@@ -1,6 +1,6 @@
 const Listing = require("./models/listing.model.js"); // Importing the Listing model
 const Review = require("./models/review.model.js");
-const {reviewsSchema } = require("./schema.js"); // Importing Joi schema for validation
+const {reviewsSchema, ListingSchema } = require("./schema.js"); // Importing Joi schema for validation
 
 
 module.exports.isLoggedIn = (req, res, next) => {

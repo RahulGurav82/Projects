@@ -1,4 +1,7 @@
 // Import necessary modules
+if(process.env.NODE_ENV != "production") {
+    require('dotenv').config();
+}
 const express = require("express"); // Importing Express framework
 const mongoose = require("mongoose"); // Importing Mongoose for MongoDB connection
 const path = require("path"); // Importing 'path' module to handle file and directory paths
