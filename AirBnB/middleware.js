@@ -1,5 +1,6 @@
 const Listing = require("./models/listing.model.js"); // Importing the Listing model
 const Review = require("./models/review.model.js");
+const {reviewsSchema } = require("./schema.js"); // Importing Joi schema for validation
 
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -38,3 +39,21 @@ module.exports.isReviewAuthor = async (req, res, next) => {
     }
     next();
 }
+
+module.exports.validateSchema = (req, res, next) => {
+    const { error } = ListingSchema.validate(req.body);
+    if (error) {
+        throw new ExpressError(400, error.details.map(err => err.message).join(', '));
+    } else {
+        next();
+    }
+};
+
+module.exports.validateReviews = (req, res, next) => {
+    const { error } = reviewsSchema.validate(req.body);
+    if (error) {
+        throw new ExpressError(400, error.details.map(err => err.message).join(', '));
+    } else {
+        next();
+    }
+};
