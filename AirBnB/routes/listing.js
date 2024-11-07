@@ -6,6 +6,7 @@ const ExpressError = require("../utils/ExpressError.js"); // Custom error class
 const Listing = require("../models/listing.model.js"); // Importing the Listing model
 const { isLoggedIn } = require("../middleware.js");
 const { isOwner } = require("../middleware.js");
+const listingController = require("../controllers/listings.js");
 
 
 const validateSchema = (req, res, next) => {
@@ -17,10 +18,7 @@ const validateSchema = (req, res, next) => {
     }
 };
 
-Router.get("/", wrapAsync(async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index", { allListings });
-}));
+Router.get("/", wrapAsync(listingController.index));
 
 Router.get("/new", isLoggedIn, (req, res) => {
     res.render("listings/new");
