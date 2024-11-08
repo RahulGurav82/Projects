@@ -84,3 +84,8 @@ body {
 .show-img {
     height: 30vh;
 }
+
+#map {  
+    height: 400px; 
+    width: 100%;
+}

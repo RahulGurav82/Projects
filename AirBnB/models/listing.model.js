@@ -51,6 +51,17 @@ const listingSchema = new Schema({
   owner : {
     type : Schema.Types.ObjectId,
     ref: "User",
+  },
+  geometry: {
+    type: {
+      type: String,  // 'type' field should be a String, not a Number
+      enum: ['Point'],  // Only allow 'Point'
+      required: true
+    },
+    coordinates: {
+      type: [Number],  // Array of Numbers (latitude and longitude)
+      required: true
+    }
   }
 });
 

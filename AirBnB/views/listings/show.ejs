@@ -55,10 +55,12 @@
 
         <!-- Display All Reviews -->
         <hr />
-        <h4>All Ratings</h4>
-        <ul class="list-group mb-4">
-            <% listings.reviews.forEach(function(review) { %>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+        <% if(listings.reviews.length > 0) { %>
+
+            <h4>All Ratings</h4>
+            <ul class="list-group mb-4">
+                <% listings.reviews.forEach(function(review) { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
                     <span>
                         <%= review.author.username %> 
 
@@ -74,8 +76,16 @@
                         <button class="btn btn-sm btn-danger">Delete</button>
                     </form>
                 </li>
-            <% }); %>
-        </ul>
+                <% }); %>
+            </ul>
+            <% } %>
 
     </div>
+    <div class="col-8 offset-2">
+        <h3>Where you'll be</h3>
+        <div id="map" style="height: 400px;"></div>
+        <!-- Hidden input to store coordinates value for JS -->
+        <input type="hidden" id="coordinates" value="<%- JSON.stringify(listings.geometry.coordinates) %>">
+    </div>
 </div>
+<script src="/js/map.js"></script>
