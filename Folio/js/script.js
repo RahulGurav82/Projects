@@ -1,9 +1,37 @@
+const themeToggle = document.getElementById("theme-toggle");
+themeToggle.addEventListener("change", () => {
+  document.body.classList.toggle("dark-mode");
+});
 
+const modeSwitch = document.getElementById("mode-switch");
+modeSwitch.addEventListener("change", () => {
+document.body.classList.toggle("dark-mode");
+});
 
-const checkbox = document.getElementById("checkbox")
-checkbox.addEventListener("change", () => {
-  document.body.classList.toggle("dark-mode")
-})
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    
+    if (sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+        // Remove the event listener when the sidebar is closed
+        document.removeEventListener('click', closeSidebarOnClickOutside);
+    } else {
+        sidebar.classList.add('open');
+        // Add the event listener to close the sidebar when clicking outside
+        document.addEventListener('click', closeSidebarOnClickOutside);
+    }
+}
+
+function closeSidebarOnClickOutside(event) {
+    const sidebar = document.querySelector('.sidebar');
+    const hamburger = document.querySelector('.hamburger');
+    
+    // If the click is outside the sidebar and the hamburger menu
+    if (!sidebar.contains(event.target) && !hamburger.contains(event.target)) {
+        sidebar.classList.remove('open');
+        document.removeEventListener('click', closeSidebarOnClickOutside); // Remove listener after closing
+    }
+}
 
 
 // infinite scrolling effect

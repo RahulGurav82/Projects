@@ -74,6 +74,8 @@ nav .menus ul li a{
     font-size: 1.5rem;
     padding: .5rem .6rem;
     border-radius: 6px;
+    display: flex;
+    align-items: center;
 }
 
 nav .menus ul li a:hover, .active{
@@ -92,16 +94,12 @@ nav .rg-tp-btn {
     font-size: 1.5rem;
 }
 
-nav .rg-tp-btn .dark-light {
-
-}
-
-.checkbox {
+.dark-menu .checkbox {
     opacity: 0;
     position: absolute;
   }
   
-  .checkbox-label {
+.dark-menu .checkbox-label {
     background-color: #111;
     width: 50px;
     height: 26px;
@@ -114,9 +112,15 @@ nav .rg-tp-btn .dark-light {
     align-items: center;
   }
   
-  .fa-moon {color: #f1c40f;}
+  .fa-moon {
+    color: #f1c40f;
+    font-size: 1rem;
+}
   
-  .fa-sun {color: #f39c12;}
+  .fa-sun {
+    color: #f39c12;
+    font-size: 1rem;
+}
   
   .checkbox-label .ball {
     background-color: #fff;
@@ -132,30 +136,49 @@ nav .rg-tp-btn .dark-light {
   .checkbox:checked + .checkbox-label .ball {
     transform: translateX(24px);
   }
-  
-/* nav .rg-tp-btn .dark-light #light{
-    display: none;
-} */
-/* nav .rg-tp-btn .dark-light .bx-sun.light{
-    display: inline !important;
-} */
-/* 
-nav .rg-tp-btn .dark-light #dark{
-    display: none;
-} */
 
-nav .rg-tp-btn .dark-light i{
-    padding: .5rem;
-    border-radius: 4px;
-}
-nav .rg-tp-btn .dark-light i:hover{
-    background-color: var(--support-color);
-    color: #272a34;
-}
 
-#dark, #light {
-    color: var(--text-color);
-}
+
+  .theme-toggle {
+    opacity: 0;
+    position: absolute;
+  }
+
+  .theme-label {
+    background-color: #111;
+    width: 50px;
+    height: 26px;
+    border-radius: 50px;
+    position: relative;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .fa-moon {
+    color: #f1c40f;
+  }
+
+  .fa-sun {
+    color: #f39c12;
+  }
+
+  .theme-label .slider {
+    background-color: #fff;
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    transition: transform 0.2s linear;
+  }
+
+  .theme-toggle:checked + .theme-label .slider {
+    transform: translateX(24px);
+  }
 
 nav .rg-tp-btn .cta-btn {
     display: flex;
@@ -202,12 +225,8 @@ nav .rg-tp-btn .cta-btn i {
     transition: .5s;
 }
 
-.sidebar .closebtn {
-    position: absolute;
-    top: 25px;
-    right: 10px;
-    font-size: 2.5rem;
-    font-weight: 600;
+.sidebar.open {
+    width: 250px; /* Sidebar opens to this width */
 }
 
 .sidebar .top {
@@ -266,28 +285,59 @@ nav .rg-tp-btn .cta-btn i {
     flex-direction: column;
 }
 
-.sidebar .bottom .rg-tp-btn .dark-light {
+.sidebar .bottom .rg-tp-btn .dark {
     padding: .5rem;
     border-radius: 6px;
     color: var(--text-color);
     font-size: 1rem;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: .7rem;
     margin-bottom: 10px;
     transition: .3s;
+}
+
+.mode-switch {
+    opacity: 0;
     position: absolute;
-    /* background: #000; */
-}
-
-.sidebar .bottom .rg-tp-btn .dark-light #light {
-    display: none;
-}
-
-.sidebar .bottom .rg-tp-btn .dark-light:hover{
-    background-color: var(--support-color);
-    transition: .3s;
-}
+  }
+  
+  .mode-label {
+    background-color: #111;
+    width: 50px;
+    height: 26px;
+    border-radius: 50px;
+    position: relative;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .fa-moon {
+    color: #f1c40f;
+  }
+  
+  .fa-sun {
+    color: #f39c12;
+  }
+  
+  .mode-label .toggle-slider {
+    background-color: #fff;
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    transition: transform 0.2s linear;
+  }
+  
+  .mode-switch:checked + .mode-label .toggle-slider {
+    transform: translateX(24px);
+  }
 
 .sidebar .bottom .rg-tp-btn .cta-btn {
     display: flex;
@@ -340,10 +390,8 @@ section .top .col-1 .profile-pic {
     width: 100%;
     height: 280px;
     border-radius: 10px;
-
     background-image: url('../images/Rahul.jpeg');
     background-size: cover;
-    /* background-position: center; */
 }
 
 section .top .col-1 h2 {
@@ -600,6 +648,7 @@ section .top .col-3 .projects {
 
     .hamburger {
         display: inline;
+        cursor: pointer;
     }
 
     .hamburger i {
@@ -643,13 +692,3 @@ section .top .col-3 .projects {
         padding: 1rem .5rem 0rem .5rem;
     }
 }
-/* 
-section .top .col-1, section .top .col-2, section .top .col-3 {
-    margin-right: 20px;
-}
-
-section .top .col-1 .btn {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-} */
