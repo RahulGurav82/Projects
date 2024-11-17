@@ -1,251 +1,344 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ride with Google Maps</title>
+  
+  <!-- Google Maps API with Places Library -->
+  <script src="https://maps.gomaps.pro/maps/api/js?key=AlzaSyGjKuV62Wagogh5s9oPrJrQdDmuyn8l-1D&libraries=places&callback=initMap" async defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Boxicons stylesheet -->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- fontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Portfolio</title>
+  <!-- Custom CSS -->
+  <style>
+    /* Hero section styles */
+    .hero {
+      background: #007bff;
+      color: white;
+      padding: 60px 0;
+      text-align: center;
+    }
+
+    /* Form styles */
+    .form-container {
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container label {
+      font-weight: bold;
+    }
+
+    /* Suggestions box */
+    #suggestions {
+      border: 1px solid #ccc;
+      max-height: 200px;
+      overflow-y: auto;
+      background-color: white;
+      position: absolute;
+      z-index: 1000;
+    }
+
+    #suggestions .suggestion {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #suggestions .suggestion:hover {
+      background-color: #e9ecef;
+    }
+
+    /* Responsive map container */
+    #map {
+      width: 100%;
+      height: 500px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
+
 <body>
 
-    <!-- sidebar for small devices -->
-    <div class="sidebar" id="sidebar">
-        <!-- <a href="#" class="closebtn" onclick="closeSidebar()">&times;</a> -->
-        <div class="top">
-            <div class="logo">
-                <i class='bx bxl-xing'></i>
-                <h2>Rahul</h2>
-            </div>
-            <div class="menus">
-                <ul>
-                    <li>
-                        <a href="#" class="active">
-                            <i class='bx bx-home' ></i>
-                            <p>Home</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class='bx bx-user-circle'></i>
-                            About
-                        </a>
-                    </li>
-                    <li><a href="#"><i class='bx bx-layer'></i>Services</a></li>
-                    <li><a href="#"><i class='bx bxl-pocket'></i>Works</a></li>
-                    <li><a href="#"><i class='bx bxl-blogger' ></i>Blogs</a></li>
-                    <li><a href="#"><i class='bx bx-message-square-dots' ></i>Contact</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="bottom">
-            <div class="rg-tp-btn">
-                <div class="dark">
-                    <input type="checkbox" class="mode-switch" id="mode-switch">
-                    <label for="mode-switch" class="mode-label">
-                      <i class="fas fa-moon"></i>
-                      <i class="fas fa-sun"></i>
-                      <span class="toggle-slider"></span>
-                    </label>
-                  </div>
-                  
-                <button class="cta-btn">Let's Talk <i class='bx bx-right-arrow-alt'></i></button>
-            </div>
-        </div>
-    </div>
+  <!-- Form Section -->
+  <div class="container form-container mt-5">
+    <form id="rideForm">
+      <div class="mb-3">
+        <label for="source" class="form-label">Source:</label>
+        <input type="text" class="form-control" name="source" id="source" required placeholder="Enter source">
+      </div>
 
-    <div class="main">
+      <div class="mb-3 position-relative">
+        <label for="destination" class="form-label">Destination:</label>
+        <input type="text" class="form-control" name="destination" id="destination" required placeholder="Enter destination" autocomplete="off">
+        <div id="suggestions"></div>
+      </div>
 
-        <!-- nav section design start here... -->
-        <nav>
-            <div class="logo">
-                <i class='bx bxl-xing'></i>
-                <h2>Rahul</h2>
-            </div>
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary" id="startRideButton">Start Ride</button>
+      </div>
+    </form>
+  </div>
 
-            <div class="menus">
-                <ul>
-                    <li>
-                        <a href="#" class="active">
-                            <i class='bx bx-home' ></i>
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class='bx bx-user-circle'></i>
-                            About
-                        </a
-                        ></li>
-                    <li><a href="#"><i class='bx bx-layer'></i>Services</a></li>
-                    <li><a href="#"><i class='bx bxl-pocket'></i>Works</a></li>
-                    <li><a href="#"><i class='bx bxl-blogger' ></i>Blogs</a></li>
-                    <li><a href="#"><i class='bx bx-message-square-dots' ></i>Contact</a></li>
-                </ul>
-            </div>
+  <!-- Google Map Section -->
+  <div id="map"></div>
 
-            <button class="hamburger" onclick="toggleSidebar()">
-                <i class='bx bx-menu'></i>
-            </button>
-            <div class="rg-tp-btn">
-                <div>
-                    <div>
-                        <input type="checkbox" class="theme-toggle" id="theme-toggle">
-                        <label for="theme-toggle" class="theme-label">
-                          <i class="fas fa-moon"></i>
-                          <i class="fas fa-sun"></i>
-                          <span class="slider"></span>
-                        </label>
-                      </div>
-                </div>
-                <button class="cta-btn">Let's Talk <i class='bx bx-right-arrow-alt'></i></button>
-            </div>
-        </nav>
-        <!-- nav section End here -->
+  <!-- Google Maps Initialization Script -->
+<script>
+    let map;
+    let directionsService;
+    let directionsRenderer;
+    let userMarker;
+    let watchID;
+    let rideMarker;
+    let routePolyline;
+    
+    // Initialize the map and track user's location
+    function initMap() {
+      // Initialize the map
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 20.5937, lng: 78.9629 }, // Default coordinates (India)
+        zoom: 9,
+      });
+    
+      directionsService = new google.maps.DirectionsService();
+      directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+      directionsRenderer.setMap(map);
+    
+      // Track user's location
+      if (navigator.geolocation) {
+        watchID = navigator.geolocation.watchPosition(
+          (position) => {
+            const { latitude, longitude, heading } = position.coords;
+            const userCoords = { lat: latitude, lng: longitude };
+    
+            // If marker doesn't exist, create it
+            if (!userMarker) {
+              userMarker = new google.maps.Marker({
+                position: userCoords,
+                map: map,
+                title: "You are here",
+                icon: {
+                  path: google.maps.SymbolPath.CIRCLE,
+                  fillColor: "#4285F4",
+                  fillOpacity: 1,
+                  strokeColor: "#ffffff",
+                  strokeWeight: 2,
+                  scale: 7,
+                },
+              });
+            } else {
+              // Update marker position and rotation
+              userMarker.setPosition(userCoords);
+    
+              if (heading !== null) {
+                userMarker.setIcon({
+                  path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                  fillColor: "#4285F4",
+                  fillOpacity: 1,
+                  strokeColor: "#ffffff",
+                  strokeWeight: 2,
+                  scale: 7,
+                  rotation: heading, // Rotate based on the heading
+                });
+              }
+            }
+    
+            // Center the map on the user's location
+            map.setCenter(userCoords);
+    
+            // Update the "source" field with the user's current location
+            document.getElementById("source").value = `${latitude},${longitude}`;
+          },
+          (error) => {
+            alert("Error fetching location: " + error.message);
+          },
+          { enableHighAccuracy: true, maximumAge: 0 }
+        );
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    
+      // Initialize autocomplete for destination input
+      const destinationInput = document.getElementById('destination');
+      const autocomplete = new google.maps.places.Autocomplete(destinationInput);
+      autocomplete.setFields(['place_id', 'geometry', 'name']);
+    
+      // Add event listener to start the ride on form submission
+      document.getElementById('rideForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const source = document.getElementById('source').value;
+        const destination = document.getElementById('destination').value;
+    
+        if (source && destination) {
+          startRide(source, destination);
+        } else {
+          alert("Please provide both source and destination.");
+        }
+      });
+    }
+    
+    // Geocode address to latitude and longitude
+    function geocodeAddress(address, callback) {
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ address: address }, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK) {
+          callback(results[0].geometry.location);
+        } else {
+          alert("Geocode failed: " + status);
+        }
+      });
+    }
+    
+    let isRideInProgress = false; // Flag to track if ride is in progress
+let rideInterval = null; // Interval for tracking ride
 
-        <section>
-            <div class="top">
-                <div class="col-1">
-                    <div class="profile-pic">
-                        <!-- <img src="./images/Rahul.jpeg" alt="" srcset=""> -->
-                    </div>
-                    <div class="info">
-                        <h2>Rahul Gurav   👋</h2>
-                        <p>
-                            A Passionate Full Stack Developer 🖥️& Having<br>2 years Experiences With 1 Real-World Project.
-                            <br> Now Work In Infosys
-                        </p>
-                        <div class="btn">
-                            <button class="call-btn">
-                                <i class='bx bx-phone-call'></i>
-                                Book A Call
-                            </button>
-                            <button class="email-btn">
-                                <i class='bx bx-copy' ></i>
-                                Copy Email
-                            </button>
-                        </div>
-                        <div class="social-link">
-                            <i class='bx bxl-linkedin' ></i>
-                            <i class='bx bxl-github' ></i>
-                            <i class='bx bxl-instagram' ></i>
-                            <i class='bx bxl-facebook' ></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="work-experience">
-                        <h2>Work Experience</h2>
-                        <div class="display" id="scrollContainer">
+function startRide(source, destination) {
+    const geocoder = new google.maps.Geocoder();
 
-                            <div class="item">
-                                <div class="logo">
-                                    <img src="./images/React.png" style="height: 60px;" alt="" srcset="">
-                                </div>
-                                <div class="info">
-                                    <h3>Frontend Using React</h3>
-                                    <p>10+ Fronted Website Using React.</p>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="logo">
-                                    <img src="./images/FullStack.png" style="height: 55px;" alt="" srcset="">
-                                </div>
-                                <div class="info">
-                                    <h3>Fullstack Project Using MERN</h3>
-                                    <p>8+ Project Fronted + Backend.</p>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="logo">
-                                    <img src="./images/ChatGpt.png" alt="" srcset="">
-                                </div>
-                                <div class="info">
-                                    <h3>Project With Ai</h3>
-                                    <p>20+ Project Complete Using AI.</p>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="logo">
-                                    <img src="./images/Ecommerce.png" alt="" srcset="">
-                                </div>
-                                <div class="info">
-                                    <h3>Ecommerce Project</h3>
-                                    <p>5+ Project Ecommerce Website.</p>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="logo">
-                                    <img src="./images/Wordpress.png" alt="" srcset="">
-                                </div>
-                                <div class="info">
-                                    <h3>Wordpress Project</h3>
-                                    <p>3+ Wordpress Website.</p>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="logo">
-                                    <img src="./images/Shopify.png" alt="" srcset="">
-                                </div>
-                                <div class="info">
-                                    <h3>Shopify Store</h3>
-                                    <p>2+ Shopify Stores.</p>
-                                </div>
-                            </div>
+    // Geocode source and destination
+    if (source.includes(',')) {
+        const [lat, lng] = source.split(',').map(Number);
+        const sourceLatLng = new google.maps.LatLng(lat, lng);
 
-                        
-                        </div>                        
-                    </div>
-                    
-                    <div class="my-expert">
-                        <h2>My Expert Area</h2>
-                        <div class="skills">
-                            <div class="skill" style="background-color: transparent;">
-                                <img src="./images/NodeJs.png" alt="" srcset="">
-                            </div>
-                            <div class="skill">
-                                <img src="./images/Figma.png" alt="" srcset="">
-                            </div>
-                            <div class="skill" style="background-color: transparent;">
-                                <img src="./images/MongoDB.png" alt="" srcset="">
-                            </div>
-                            <div class="skill">
-                                <img src="./images/React.png" alt="" srcset="">
-                            </div>
-                            <div class="skill">
-                                <img src="./images/mysql.png" alt="" srcset="">
-                            </div>
-                            <div class="skill">
-                                <img src="./images/NextJs.png" style="background-color: white;"alt="" srcset="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="col-3-top">
-                        <h2>Recent Projects</h2>
-                        <p>All Projects <i class='bx bx-right-arrow-alt'></i></p>
-                    </div>
-                    <div class="projects">
-                        
-                    </div>
-                    <div class="projects">
+        geocodeAddress(destination, (destinationLatLng) => {
+            requestDirections(sourceLatLng, destinationLatLng);
+        });
+    } else {
+        geocodeAddress(source, (sourceLatLng) => {
+            geocodeAddress(destination, (destinationLatLng) => {
+                requestDirections(sourceLatLng, destinationLatLng);
+            });
+        });
+    }
+}
+    
+    // Request directions and animate the route
+// Request directions and animate the route
+function requestDirections(sourceLatLng, destinationLatLng) {
+    const request = {
+        origin: sourceLatLng,
+        destination: destinationLatLng,
+        travelMode: google.maps.TravelMode.DRIVING,
+    };
 
-                    </div>
-                </div>
-            </div>
+    directionsService.route(request, (response, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+            directionsRenderer.setDirections(response);
 
-            <div class="bottom">
+            const routePath = response.routes[0].overview_path;
+            // animateRide(routePath); // Start the animation
 
-            </div>
-        </section>
+            // Start real-time tracking if ride begins
+            if (!isRideInProgress) {
+                isRideInProgress = true;
+                trackUserMovement(routePath); // Start tracking user position
+            }
+        } else {
+            alert("Directions request failed: " + status);
+        }
+    });
+}
 
-    </div>
-    <!-- JavaScript -->
-     <script src="./js/script.js"></script>
+// Function to track the user's real-time movement along the route
+function trackUserMovement(routePath) {
+    if (watchID) {
+        navigator.geolocation.clearWatch(watchID); // Stop any previous geolocation watch
+    }
+
+    watchID = navigator.geolocation.watchPosition(
+        (position) => {
+            const { latitude, longitude } = position.coords;
+            const userCoords = { lat: latitude, lng: longitude };
+
+            // Update the blue marker's position with the user's current location
+            if (rideMarker) {
+                rideMarker.setPosition(userCoords); // Update position
+            } else {
+                rideMarker = new google.maps.Marker({
+                    position: userCoords,
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        fillColor: "blue",
+                        fillOpacity: 1,
+                        strokeColor: "white",
+                        strokeWeight: 2,
+                        scale: 6,
+                    },
+                });
+            }
+
+            // Center the map on the user's current location
+            map.setCenter(userCoords);
+
+            // Optionally, check if the user has reached the destination
+            if (google.maps.geometry.spherical.computeDistanceBetween(userCoords, routePath[routePath.length - 1]) < 100) {
+                alert("You have arrived at your destination!");
+                isRideInProgress = false;
+                clearInterval(rideInterval); // Stop the tracking when destination is reached
+            }
+        },
+        (error) => {
+            alert("Error fetching location: " + error.message);
+        },
+        { enableHighAccuracy: true, maximumAge: 0 }
+    );
+}
+
+    
+    // Animate the ride along the route
+    function animateRide(routePath) {
+    let index = 0;
+
+    if (rideMarker) rideMarker.setMap(null); // Clear any existing marker
+
+    rideMarker = new google.maps.Marker({
+        position: routePath[0],
+        map: map,
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: "blue",
+            fillOpacity: 1,
+            strokeColor: "white",
+            strokeWeight: 2,
+            scale: 6,
+        },
+    });
+
+    if (routePolyline) routePolyline.setMap(null); // Clear any existing polyline
+
+    routePolyline = new google.maps.Polyline({
+        path: [],
+        strokeColor: "#007bff",
+        strokeOpacity: 0.7,
+        strokeWeight: 4,
+        map: map,
+    });
+
+    // Animation loop for route path
+    const interval = setInterval(() => {
+        if (index < routePath.length) {
+            rideMarker.setPosition(routePath[index]);
+            routePolyline.getPath().push(routePath[index]);
+            map.setCenter(routePath[index]);
+            index++;
+        } else {
+            clearInterval(interval);
+            alert("Ride completed!");
+        }
+    }, 100); // Adjust speed by changing interval time
+}
+</script>
+    
+  
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
