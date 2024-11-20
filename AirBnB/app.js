@@ -3,18 +3,19 @@ if(process.env.NODE_ENV != "production") {
     require('dotenv').config();
 }
 const express = require("express"); // Importing Express framework
-const mongoose = require("mongoose"); // Importing Mongoose for MongoDB connection
-const path = require("path"); // Importing 'path' module to handle file and directory paths
 const methodOverride = require("method-override"); // Importing method-override for overriding HTTP methods
+const mongoose = require("mongoose"); // Importing Mongoose for MongoDB connection
 const ejsMate = require("ejs-mate"); // Importing ejsMate for EJS layouts
+const session = require("express-session");
+const flash = require("connect-flash");
+const LocalStrategy = require("passport-local");
+const passport = require("passport");
+
+const path = require("path"); // Importing 'path' module to handle file and directory paths
 const ExpressError = require("./utils/ExpressError.js"); // Custom error class
 const listingRouter = require("./routes/listing.js");
 const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
-const session = require("express-session");
-const flash = require("connect-flash");
-const passport = require("passport");
-const LocalStrategy = require("passport-local");
 const User = require("./models/user.model.js");
 
 // Express App Setup
@@ -48,6 +49,7 @@ app.get("/", (req, res) => {
 
 app.use(session(sessionOptions)); // Enabling sessions with sessionOptions
 app.use(flash()); // Enabling flash messages
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
