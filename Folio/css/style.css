@@ -412,7 +412,7 @@ section .top .col-1 .btn {
     margin-top: 1rem;
     width: 100%;
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
 }
 
 section .top .col-1 .btn button {
@@ -443,9 +443,10 @@ section .top .col-1 .btn .email-btn:hover {
 }
 
 section .top .col-1 .social-link {
-    margin-top: 1rem;
+    margin-top: 2rem;
     display: flex;
-    gap: 2rem;
+    /* gap: 3rem; */
+    justify-content: space-between;
     font-size: 1.5rem;
     cursor: pointer;
 }
@@ -496,14 +497,12 @@ section .top .col-2 .display {
 section .top .col-2 .item {
     width: 100%; 
     height: 80px; 
-    /* background-color: lightblue; */
     margin-bottom: 10px;
     display: flex;
     align-items: center;    
 }
 
 section .top .col-2 .item .logo {
-    /* background: #9d3a3a; */
     height: 80px;
     width: 100px;
     display: flex;
@@ -547,18 +546,12 @@ section .top .col-2 .my-expert {
 
 section .top .col-2 .skills {
     height: 200px;
-    margin-top: 10px;
-    /* background-color: var(--support-color); */
-    display: flex;
     flex-wrap: wrap; /* Allows wrapping to the next line */
-    gap: 10px; /* Adds space between the items */
-    justify-content: space-between; 
-
     display: flex;
-    flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
     margin-top: 20px;
+    overflow: hidden;
 } 
 
 section .top .col-2 .skill {
@@ -626,6 +619,16 @@ section .top .col-3 .projects {
     background-color: var(--support-color);
     border-radius: 15px;
     margin-top: 1rem;
+    background-position: center;
+    background-size: cover;
+}
+
+section .top .col-3 .top-image{
+    background-image: url("../images/chatapp.png");
+} 
+
+section .top .col-3 .bottom-image{
+    background-image: url("../images/wheatherapp.png");
 }
 
 
@@ -635,6 +638,24 @@ section .top .col-3 .projects {
     nav .menus ul{
         width: 700px;
     }
+
+    section .top .col-1 {
+        width: 370px;
+    }
+
+    section .top .col-2  {
+        width: 370px;
+    }
+
+    section .top .col-3 {
+        width: 370px;
+    }
+}
+
+@media (max-width : 1210px) { 
+    section .top .col-2 .skills {
+        gap: 15px;
+    } 
 }
 
 @media (max-width : 1194px) {
@@ -654,6 +675,57 @@ section .top .col-3 .projects {
     .hamburger i {
         font-size: 2rem;
         font-weight: 600;
+    }
+
+    section .top .col-1 {
+        width: 330px;
+    }
+
+    section .top .col-2  {
+        width: 330px;
+    }
+
+    section .top .col-3 {
+        width: 330px;
+    }
+
+    section .top .col-1 .social-link {
+        gap: 2rem;
+    }
+
+    section .top .col-2 .skills {
+        gap: 5px;
+    }
+
+    section .top .col-3 {
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width : 1123px) {
+    section .top {
+        flex-direction: column;
+    }  
+
+    section .top .col-1 {
+        width: 100%;
+    }
+
+    section .top .col-2  {
+        width: 100%;
+    }
+
+    section .top .col-3 {
+        width: 100%;
+    }
+
+    section .top .col-1 .profile-pic {
+        width: 100%;
+        height: 480px;
+    }
+
+    section .top .col-2 {
+        margin-top: 1rem;
     }
 }
 
@@ -677,7 +749,17 @@ section .top .col-3 .projects {
 
 @media (max-width : 737px) {
     body {
-        padding: 1rem 2.4rem 0rem 2.4rem;
+        padding: .3rem 2.4rem 0rem 2.4rem;
+    }
+}
+
+@media (max-width : 579px) {
+    section .top .col-1 .profile-pic {
+        background-position: center;
+    }
+
+    section .top .col-1 .social-link {
+        gap: 1.7rem;
     }
 }
 
