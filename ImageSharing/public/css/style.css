@@ -1,0 +1,99 @@
+*{
+    padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    height: 100vh;
+}
+
+.main {
+    background: linear-gradient(127deg, rgba(234,190,176,1) 1%, rgba(255,255,255,1) 21%);    
+    height: 100%;
+    padding: 2rem;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.menus {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+    font-size: 1.5rem;
+    color: rgb(138, 140, 141);
+    cursor: pointer;
+}
+
+.singup {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+button {
+    border: none;
+    font-size: 1rem;
+    padding: 1rem 1.7rem;
+    border-radius: 25px;
+    background: #5d50c6;
+    color: white;
+    font-weight: 600;
+}
+
+.hamburger {
+    display: none;
+    font-size: 1.5rem;
+}
+
+#close {
+    display: none;
+}
+
+@media (max-width: 995px) {
+    .menus {
+        position: absolute;
+        top: 0px;
+        left: 0;
+        right: 0;
+        height: 100%;
+        flex-direction: column;
+        text-align: center;
+        background: #ffffff;
+        gap: 0;
+        overflow: hidden;
+        transition: all 0.5s;
+        /* padding-top: 1rem; */
+        /* margin-top: 10px; */
+    }
+
+    .menus p {
+        padding: 20px;
+        padding-top: 0;
+    }
+
+    #close {
+        display: block;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+    
+    .hamburger {
+        display: inline;
+        cursor: pointer;
+    }
+
+    nav button {
+        display: none;
+    }
+}
