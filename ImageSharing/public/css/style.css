@@ -3,6 +3,10 @@
     box-sizing: border-box;
     margin: 0;
 }
+html, body {
+    height: 100vh;
+    /* overflow: hidden;  */
+}
 
 body {
     height: 100vh;
@@ -41,7 +45,7 @@ nav {
     gap: 1rem;
 }
 
-button {
+.button {
     border: none;
     font-size: 1rem;
     padding: 1rem 1.7rem;
@@ -60,6 +64,131 @@ button {
     display: none;
 }
 
+.hero {
+    display: flex;
+    margin-top: 3rem;
+    height: 100%;
+}
+
+.hero .left {
+    /* display: flex; */
+    flex-direction: column;
+}
+
+.hero .left .explore-btn {
+    background: #ffffff;
+    border-radius: 1.5rem;
+    color: #f85e9f;
+    border: none;
+    font-weight: bold;
+    padding: 1rem 1.4rem;
+}
+
+.hero .left h1 {
+    margin-top: 2rem;
+    font-size: 4rem;
+}
+
+span{
+    color: #f85e9f;
+}
+
+.hero .left p {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    color: #99999e;
+}
+
+.hero .left .cta {
+    margin-top: 2rem;
+    
+}
+
+.hero .left #cta {
+    border: none;
+    font-size: 1rem;
+    padding: 1rem 1.7rem;
+    border-radius: 25px;
+    background: #5d50c6;
+    color: white;
+    font-weight: 600;
+
+}
+
+
+.right {
+    position: relative; /* Ensures child elements can be positioned relative to this */
+}
+
+.layer-container {
+    position: relative; /* Establishes a positioning context for the .images div */
+    width: fit-content; /* Adjust to the size of the layer image */
+    margin: 0 auto; /* Center the layer-container */
+}
+
+.layer-image {
+    display: block; /* Ensures no unwanted whitespace below the image */
+    width: 750px; /* Match the width of your layer.png */
+    height: 250px; /* Match the height of your layer.png */
+}
+
+.images img {
+    max-width: 100%; /* Ensures images scale within their grid cells */
+    height: auto;
+    
+}
+
+.images {
+    height: 100%; /* Ensure the grid container has height for centering */
+    position: absolute; /* Positions the images div over the layer image */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ensures it covers the layer image */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: center;
+    justify-items: center;
+    animation: move-up-down 3s ease-in-out infinite; /* Apply animation */
+}
+
+.images img:nth-child(1) {
+    animation: move-up-down 3s ease-in-out infinite;
+}
+
+.images img:nth-child(2) {
+    animation: move-up-down 3s ease-in-out infinite 0.8s; /* 0.5s delay */
+}
+
+.images img:nth-child(3) {
+    animation: move-up-down 3s ease-in-out infinite 3s; /* 1s delay */
+}
+
+
+@keyframes move-up-down {
+    0% {
+        transform: translateY(0); /* Start position */
+    }
+    50% {
+        transform: translateY(-20px); /* Move up */
+    }
+    100% {
+        transform: translateY(0); /* Return to start position */
+    }
+}
+
+.images img:nth-child(1),
+.images img:nth-child(2) {
+    grid-column: 1; /* Place in the first column */
+}
+.images img:nth-child(3) {
+    grid-column: 2; /* Place in the second column */
+    align-self: center; /* Center vertically in the grid cell */
+    justify-self: center; /* Center horizontally in the grid cell */
+}
+
+
+
 @media (max-width: 995px) {
     .menus {
         position: absolute;
@@ -73,8 +202,6 @@ button {
         gap: 0;
         overflow: hidden;
         transition: all 0.5s;
-        /* padding-top: 1rem; */
-        /* margin-top: 10px; */
     }
 
     .menus p {

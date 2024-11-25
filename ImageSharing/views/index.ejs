@@ -11,30 +11,6 @@
 </head>
 <body>
     <div class="main">
-        <!-- <div class="sidebar">
-            <div class="top">
-                <div class="logo">
-                    <img src="./assets/Vector.png" alt="" srcset="">
-                    <h2>Travlog</h2>
-                </div>
-    
-                <div class="hamburger">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
-            </div>
-            <div class="bottom">
-                <div class="menus">
-                    <p style="color: black; font-weight: 500;">Home</p>
-                    <p>Discover</p>
-                    <p>Special</p>
-                    <p>Contact</p>
-                </div>
-                <div class="singup">
-                    <button style="background-color:transparent; color:black">Log in</button>
-                    <button>Sing up</button>
-                </div>
-            </div>
-        </div> -->
 
         <nav>
             <div class="logo">
@@ -50,13 +26,38 @@
                 <i class="fa-solid fa-x" id="close" onclick="toggleMenu()"></i>
             </div>
             <div class="singup">
-                <button style="background-color:transparent; color:black">Log in</button>
-                <button>Sing up</button>
+                <button class="button" style="background-color:transparent; color:black">Log in</button>
+                <button class="button" >Sing up</button>
             </div>
             <div class="hamburger">
                 <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
             </div>
         </nav>
+
+        <div class="hero">
+            <div class="left">
+                <button class="explore-btn">Explore to Word <i class="fa-solid fa-bag-shopping" style="margin-left: 10px;"></i></button>
+                <h1>Travel <span>Top <br>Destination</span> <br> of the world.</h1>
+                <p>We always make our customer happy by providing <br> as many choices as possible </p>
+                <div class="cta">
+                    <button id="cta">Upload Pic</button>
+                    <button id="cta" style="background-color: transparent; color: black; border: 1px solid rgb(185, 181, 181);">Watch Memories</button>
+                </div>
+            </div>
+            <div class="right">
+                <div class="layer-container">
+                    <img src="./assets/layer.png" alt="layer image" class="layer-image">
+                    <div class="images">
+                        <img src="./assets/Rectangle 1.png" alt="">
+                        <img src="./assets/Rectangle 2.png"  >
+                        <img src="./assets/Rectangle 3.png" alt="">
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+
     </div>
 
     <script>
@@ -71,8 +72,7 @@
             else{
                 menuList.style.maxHeight = "0px";
             }
-        }
-        
+        }   
     </script>
 </body>
 </html>
