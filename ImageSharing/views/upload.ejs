@@ -1,0 +1,21 @@
+<style>
+    .hero {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+
+<% layout("/layouts/boilerplate") %>
+<div class="hero">
+    <label for="input-file" id="drop-area">
+        <input type="file" accept="image/*" id="input-file" hidden>
+        <div id="img-view">
+            <img src="./assets/icon.png" alt="">
+            <p>Drag And Drop Or Click Here <br> To Upload Image</p>
+            <span>Upload Any Image From Desktop.</span>
+        </div>
+    </label>
+</div>

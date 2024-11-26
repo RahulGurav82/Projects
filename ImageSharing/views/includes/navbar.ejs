@@ -1,0 +1,27 @@
+<nav>
+    <div class="logo">
+        <img src="./assets/Vector.png" alt="" srcset="">
+        <h2>Travlog</h2>
+    </div>
+    <div id="menus" class="menus">
+        <p style="color: black; font-weight: 500;"><a href="/">Home</a></p>
+        <p><a href="/upload">Uploads</a></p>
+        <p><a href="/show">Show</a></p>
+        <p><a href="/contact">Contact</a></p>
+
+        <i class="fa-solid fa-x" id="close" onclick="toggleMenu()"></i>
+    </div>
+    <div class="singup">
+        <form action="/login" method="get">
+            <button class="button" style="background-color:transparent; color:black">Log in</button>
+        </form>
+
+        <form action="/signup" method="get">
+            <button class="button" >Sing up</button>
+        </form>
+
+    </div>
+    <div class="hamburger">
+        <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
+    </div>
+</nav>

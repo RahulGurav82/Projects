@@ -1,11 +1,10 @@
 *{
     padding: 0;
-    box-sizing: border-box;
     margin: 0;
+    box-sizing: border-box;
 }
 html, body {
     height: 100vh;
-    /* overflow: hidden;  */
 }
 
 body {
@@ -24,6 +23,7 @@ nav {
     justify-content: space-between;
 }
 
+
 .logo {
     display: flex;
     align-items: center;
@@ -37,6 +37,11 @@ nav {
     font-size: 1.5rem;
     color: rgb(138, 140, 141);
     cursor: pointer;
+}
+
+.menus a {
+    text-decoration: none;
+    color: rgb(138, 140, 141);
 }
 
 .singup {
@@ -71,7 +76,6 @@ nav {
 }
 
 .hero .left {
-    /* display: flex; */
     flex-direction: column;
 }
 
@@ -101,6 +105,8 @@ span{
 
 .hero .left .cta {
     margin-top: 2rem;
+    display: flex;
+    gap: 2rem;
     
 }
 
@@ -164,6 +170,9 @@ span{
     animation: move-up-down 3s ease-in-out infinite 3s; /* 1s delay */
 }
 
+button{
+    cursor: pointer;
+}
 
 @keyframes move-up-down {
     0% {

@@ -47,6 +47,10 @@ app.get("/", (req, res) => {
     res.render("index.ejs")
 });
 
+app.get("/upload", (req, res) => {
+    res.render("upload.ejs");
+});
+
 app.get("/signup", (req, res) => {
     res.render("signup.ejs");
 });
