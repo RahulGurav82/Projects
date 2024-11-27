@@ -8,6 +8,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.model.js");
 const ExpressError = require("./utils/ExpressError.js");
+const flash = require("connect-flash");
 
 // express app setup
 const PORT = 3000;
@@ -32,6 +33,7 @@ const sessionOptions = {
 }
 
 app.use(session(sessionOptions));
+app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -43,6 +45,13 @@ passport.deserializeUser(User.deserializeUser());
 mongoose.connect(MONGO_URL)
 .then(() => console.log("DB Connected."))
 .catch((err) => console.log("error in db connection", err));
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    res.locals.currUser = req.user;
+    next();
+});
 
 app.get("/", (req, res) => {
     res.render("index.ejs")
@@ -56,6 +65,9 @@ app.get("/upload", (req, res) => {
     res.render("upload.ejs");
 });
 
+
+
+
 app.get("/signup", (req, res) => {
     res.render("signup.ejs");
 });
@@ -64,17 +76,29 @@ app.post("/signup", async (req, res) => {
     let {username, email, password } = req.body;
     let newuser = new User({username, email});
     let registerUser = await User.register(newuser, password);
-    // console.log(registerUser);
     res.redirect("/");
 });
+
+
 
 app.get("/login", (req, res) => {
     res.render("login.ejs");
 });
 
 app.post("/login" , passport.authenticate("local", {failureRedirect : '/'}) , async (req, res) => {
-    res.send("welcome");
+    res.redirect("/")
 });
+
+
+app.get("/logout", (req, res) => {
+    res.redirect("/")
+})
+
+
+
+
+
+
 
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found."));
