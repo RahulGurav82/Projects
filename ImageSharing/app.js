@@ -7,6 +7,7 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.model.js");
+const ExpressError = require("./utils/ExpressError.js");
 
 // express app setup
 const PORT = 3000;
@@ -47,6 +48,10 @@ app.get("/", (req, res) => {
     res.render("index.ejs")
 });
 
+app.get("/show", (req, res) => {
+    res.render("show.ejs");
+});
+
 app.get("/upload", (req, res) => {
     res.render("upload.ejs");
 });
@@ -69,6 +74,15 @@ app.get("/login", (req, res) => {
 
 app.post("/login" , passport.authenticate("local", {failureRedirect : '/'}) , async (req, res) => {
     res.send("welcome");
+});
+
+app.all("*", (req, res, next) => {
+    next(new ExpressError(404, "Page Not Found."));
+});
+
+app.use((err, req, res, next) => {
+    const { statusCode = 500, message = "Something Went Wrong" } = err;
+    res.status(statusCode).render("error", {message});
 });
 
 app.listen(PORT, () => {

@@ -1,0 +1,50 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+    .hero {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* justify-content: center; */
+    }
+    #map {
+        width: 80%;
+        height: 500px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="hero">
+    <h1>Your Pic On Map</h1>
+    <!-- Map container -->
+    <div id="map"></div>
+</div>
+
+<script>
+    function initMap() {
+      // The location to center the map india
+      const location = { lat: 20.5937, lng: 78.9629 };
+
+      // Create the map object
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 5, // Zoom level
+        center: location, // Center the map
+      });
+
+      // Add a marker
+      const marker = new google.maps.Marker({
+        position: location,
+        map: map,
+      });
+    }
+  </script>
+  
+  <!-- Load the Google Maps API -->
+  <script 
+    src="https://maps.gomaps.pro/maps/api/js?key=AlzaSypPa2taNDPLXweDnQ3Fn9C5cKTM2bkbxKh&callback=initMap" 
+    async 
+    defer>
+  </script>
