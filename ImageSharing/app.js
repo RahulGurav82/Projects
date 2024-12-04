@@ -7,8 +7,38 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.model.js");
+const Image = require("./models/image.model.js");
 const ExpressError = require("./utils/ExpressError.js");
 const flash = require("connect-flash");
+
+const multer = require("multer");
+const { v2: cloudinary } = require("cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const NodeGeocoder = require("node-geocoder");
+
+// Cloudinary configuration
+cloudinary.config({
+  cloud_name: "doajvgc5u",
+  api_key: "296497821729676",
+  api_secret: "p9n5kZks8iydSGGAef_bsfYRIsc",
+});
+
+// Multer Storage for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "image_share",
+    allowed_formats: ["jpg", "png", "jpeg"],
+  },
+});
+const upload = multer({ storage });
+
+// Node Geocoder configuration
+const geocoder = NodeGeocoder({
+  provider: "openstreetmap", // You can use other providers like Google
+});
+
+
 
 // express app setup
 const PORT = 3000;
@@ -57,15 +87,49 @@ app.get("/", (req, res) => {
     res.render("index.ejs")
 });
 
-app.get("/show", (req, res) => {
-    res.render("show.ejs");
+app.get("/show", async (req, res) => {
+    if (!req.isAuthenticated()) {
+        req.flash("error", "You must be logged in to view your images.");
+        return res.redirect("/login");
+    }
+
+    const images = await Image.find({ uploadedBy: req.user._id });
+    res.render("show.ejs", { images });
 });
+
 
 app.get("/upload", (req, res) => {
     res.render("upload.ejs");
 });
 
+app.post("/upload", upload.single("image"), async (req, res) => {
+    if (!req.isAuthenticated()) {
+        req.flash("error", "You must be logged in to upload images.");
+        return res.redirect("/login");
+    }
 
+    const { location } = req.body;
+
+    // Geocode the location
+    const geoData = await geocoder.geocode(location);
+    if (!geoData.length) {
+        req.flash("error", "Invalid location.");
+        return res.redirect("/upload");
+    }
+
+    const coordinates = [geoData[0].longitude, geoData[0].latitude];
+    const image = new Image({
+        imageUrl: req.file.path,
+        publicId: req.file.filename,
+        location,
+        coordinates: { type: "Point", coordinates },
+        uploadedBy: req.user._id, // Associate the image with the logged-in user
+    });
+
+    await image.save();
+    req.flash("success", "Image uploaded successfully!");
+    res.redirect("/show");
+});
 
 
 app.get("/signup", (req, res) => {
@@ -79,8 +143,6 @@ app.post("/signup", async (req, res) => {
     res.redirect("/");
 });
 
-
-
 app.get("/login", (req, res) => {
     res.render("login.ejs");
 });
@@ -89,16 +151,9 @@ app.post("/login" , passport.authenticate("local", {failureRedirect : '/'}) , as
     res.redirect("/")
 });
 
-
 app.get("/logout", (req, res) => {
     res.redirect("/")
-})
-
-
-
-
-
-
+});
 
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found."));

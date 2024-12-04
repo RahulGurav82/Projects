@@ -7,7 +7,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        /* justify-content: center; */
     }
     #map {
         width: 80%;
@@ -18,29 +17,63 @@
 </style>
 
 <div class="hero">
-    <h1>Your Pic On Map</h1>
-    <!-- Map container -->
+    <h1>Your Uploaded Images</h1>
     <div id="map"></div>
+    
+   
 </div>
 
 <script>
-    function initMap() {
-      // The location to center the map india
-      const location = { lat: 20.5937, lng: 78.9629 };
+function initMap() {
+    const location = { lat: 20.5937, lng: 78.9629 };
 
-      // Create the map object
-      const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 5, // Zoom level
-        center: location, // Center the map
-      });
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 5,
+        center: location,
+    });
 
-      // Add a marker
-      const marker = new google.maps.Marker({
-        position: location,
-        map: map,
-      });
-    }
-  </script>
+    const images = <%- JSON.stringify(images) %>;
+
+    const markers = {};
+
+    images.forEach(image => {
+        const key = `${image.coordinates.coordinates[1]},${image.coordinates.coordinates[0]}`;
+        if (!markers[key]) {
+            markers[key] = {
+                position: {
+                    lat: image.coordinates.coordinates[1],
+                    lng: image.coordinates.coordinates[0],
+                },
+                images: [],
+            };
+        }
+        markers[key].images.push(image);
+    });
+
+    Object.values(markers).forEach(markerData => {
+        const marker = new google.maps.Marker({
+            position: markerData.position,
+            map: map,
+        });
+
+        const infoWindowContent = markerData.images.map(img => `
+            <div style="margin-bottom: 10px;">
+                <img src="${img.imageUrl}" alt="Image" width="100">
+                <p>${img.location}</p>
+            </div>
+        `).join("");
+
+        const infoWindow = new google.maps.InfoWindow({
+            content: infoWindowContent,
+        });
+
+        marker.addListener("click", () => {
+            infoWindow.open(map, marker);
+        });
+    });
+}
+
+</script>
   
   <!-- Load the Google Maps API -->
   <script 

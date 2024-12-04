@@ -10,18 +10,19 @@
 
 <% layout("/layouts/boilerplate") %>
 <div class="hero">
-    <form  id="form" action="">
+    <form id="form" action="/upload" method="POST" enctype="multipart/form-data">
         <h1>Upload Image</h1>
         <label for="input-file" id="drop-area">
-            <input type="file" accept="image/*" id="input-file" hidden>
-            <div id="img-view">
-                <img src="./assets/icon.png" alt="">
-                <p>Drag And Drop Or Click Here <br> To Upload Image</p>
-                <span>Upload Any Image From Desktop.</span>
-            </div>
+          <input type="file" name="image" accept="image/*" id="input-file" hidden>
+          <div id="img-view">
+            <img src="./assets/icon.png" alt="">
+            <p>Drag And Drop Or Click Here <br> To Upload Image</p>
+            <span>Upload Any Image From Desktop.</span>
+          </div>
         </label>
         <label for="location" class="location">Enter Location</label>
-        <input type="search" id="location">
-        <button>Submit</button>
-    </form>
+        <input type="search" name="location" id="location" required>
+        <button type="submit">Submit</button>
+      </form>
+      
 </div>
