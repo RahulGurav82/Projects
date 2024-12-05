@@ -3,12 +3,12 @@
     width: 100%;
     min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
 }
 </style>
 
 <% layout("/layouts/boilerplate") %>
+<link rel="stylesheet" href="./css/upload.css">
 <div class="hero">
     <form id="form" action="/upload" method="POST" enctype="multipart/form-data">
         <h1>Upload Image</h1>
@@ -24,5 +24,4 @@
         <input type="search" name="location" id="location" required>
         <button type="submit">Submit</button>
       </form>
-      
 </div>

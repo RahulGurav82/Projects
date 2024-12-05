@@ -98,7 +98,7 @@ app.get("/show", async (req, res) => {
 });
 
 
-app.get("/upload", (req, res) => {
+app.get("/upload", (req, res) => {    
     res.render("upload.ejs");
 });
 
@@ -132,6 +132,7 @@ app.post("/upload", upload.single("image"), async (req, res) => {
 });
 
 
+
 app.get("/signup", (req, res) => {
     res.render("signup.ejs");
 });
@@ -148,12 +149,17 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login" , passport.authenticate("local", {failureRedirect : '/'}) , async (req, res) => {
-    res.redirect("/")
+    res.redirect("/");
 });
 
 app.get("/logout", (req, res) => {
     res.redirect("/")
 });
+
+
+
+
+
 
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found."));

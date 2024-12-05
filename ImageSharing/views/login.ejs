@@ -1,73 +1,48 @@
-<style>
-  .login-container {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-
-  .form {
-    width: 500px;
-  }
-
-  .login-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-
-  .form-group {
-    margin-bottom: 15px;
-  }
-
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #555;
-  }
-
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .login-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .login-btn:hover {
-    background-color: #0056b3;
-  }
-</style>
+<link rel="stylesheet" href="./css/login.css">
 
 <% layout("/layouts/boilerplate") %>
 
-  <div class="login-container">
-    <h2>Login</h2>
-    <form method="post" action="/login" class="form">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" placeholder="Enter your username" required>
-    </div>
-    
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
-      </div>
-      <button type="submit" class="login-btn">Login</button>
-    </form>
-  </div>
 
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="formbg-outer">
+    <div class="formbg">
+      <div class="formbg-inner padding-horizontal--48">
+        <span class="padding-bottom--15">Sign in to your account</span>
+        <form id="stripe-login" method="post" action="/login">
+          <div class="field padding-bottom--24">
+            <label for="username">Username</label>
+            <input type="username" name="username">
+          </div>
+          <div class="field padding-bottom--24">
+            <div class="grid--50-50">
+              <label for="password">Password</label>
+              <div class="reset-pass">
+                <a href="#">Forgot your password?</a>
+              </div>
+            </div>
+            <input type="password" name="password">
+          </div>
+          <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
+            <label for="checkbox">
+              <input type="checkbox" name="checkbox"> Stay signed in for a week
+            </label>
+          </div>
+          <div class="field padding-bottom--24">
+            <input type="submit" name="submit" value="Continue">
+          </div>
+          <div class="field">
+            <a class="ssolink" href="#">Use single sign-on (Google) instead</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="footer-link padding-top--24">
+      <span>Don't have an account? <a href="/signup">Sign up</a></span>
+      <div class="listing padding-top--24 padding-bottom--24 flex-flex center-center">
+        <span><a href="#">© RahulGurav</a></span>
+        <span><a href="#">Contact</a></span>
+        <span><a href="#">Privacy & terms</a></span>
+      </div>
+    </div>
+  </div>
+</div>
