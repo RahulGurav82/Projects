@@ -20,7 +20,7 @@ const User = require("./models/user.model.js");
 
 // Express App Setup
 const app = express(); // Creating an instance of Express
-const PORT = 3000; // Setting the port number for the server
+const PORT = 4000; // Setting the port number for the server
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust"; // MongoDB connection URL
 
 app.set("view engine", "ejs"); // Setting the view engine to EJS for templating

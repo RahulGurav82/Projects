@@ -3,10 +3,10 @@ const Router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js"); // Utility function to wrap async route handlers for error handling.
 const listingController = require("../controllers/listings.js"); // Controller handling listing-related logic.
 const multer = require("multer"); // Middleware for handling multipart/form-data (file uploads).
+const { storage } = require("../cloudConfig.js"); // Cloud storage configuration for file uploads.
 const upload = multer({ storage }); // Configure multer to use the specified cloud storage.
 const { isOwner, validateSchema } = require("../middleware.js"); // Middleware to check if the user is the owner and to validate request data.
 const { isLoggedIn } = require("../middleware.js"); // Middleware to check if a user is logged in.
-const { storage } = require("../cloudConfig.js"); // Cloud storage configuration for file uploads.
 
 // Route to fetch and display all listings
 Router.get("/", wrapAsync(listingController.index));
